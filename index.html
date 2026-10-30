@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escala de Apgar</title>
+  <style>
+    :root {
+      --bg1: #1d1b2e;
+      --bg2: #2b2143;
+      --bg3: #3a2f5a;
+      --panel: rgba(20, 19, 32, 0.9);
+      --line: rgba(224, 178, 255, 0.2);
+      --pink: #f9a8d4;
+      --purple: #c4b5fd;
+      --lavender: #ddd6fe;
+      --mint: #bbf7d0;
+      --text: #f8f5ff;
+      --muted: #e9d8ff;
+      --accent: #f472b6;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, var(--bg1), var(--bg2) 45%, var(--bg3));
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 18px 60px;
+    }
+
+    .hero {
+      background: rgba(12, 10, 22, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 24px 22px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.24);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(196,181,253,0.08), transparent);
+    }
+
+    .hero h1 {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      letter-spacing: 0.05em;
+      color: #fff;
+      text-shadow: 0 0 18px rgba(244,114,182,0.35);
+    }
+
+    .hero p {
+      position: relative;
+      z-index: 1;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-top: 14px;
+      max-width: 760px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px 18px 20px;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.18);
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      color: #f9f5ff;
+      font-size: 1.4rem;
+    }
+
+    .card p, .card li {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+    .criteria {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .criterion {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px 16px;
+    }
+
+    .criterion h3 {
+      margin: 0 0 8px;
+      color: #fff;
+      font-size: 1.1rem;
+    }
+
+    .criterion p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .score-box {
+      margin-top: 28px;
+      background: linear-gradient(135deg, rgba(66, 36, 89, 0.8), rgba(21, 17, 32, 0.9));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 20px 18px;
+    }
+
+    .score-box h2 {
+      margin: 0 0 14px;
+      color: #fff;
+      font-size: 1.5rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(196,181,253,0.25);
+      background: rgba(20, 15, 27, 0.95);
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 18px;
+      background: linear-gradient(135deg, #ec4899, #a78bfa);
+      border: none;
+      color: white;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .resultado {
+      margin-top: 18px;
+      border-radius: 14px;
+      padding: 16px 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(196,181,253,0.25);
+      color: var(--text);
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .footer-note {
+      margin-top: 26px;
+      background: rgba(10, 9, 15, 0.8);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px 16px;
+    }
+
+    .footer-note h3 {
+      margin: 0 0 10px;
+      color: white;
+    }
+
+    .footer-note p {
+      margin: 8px 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1>Escala de Apgar</h1>
+      <p>
+        La escala de Apgar es una herramienta clínica utilizada para valorar la condición del recién nacido al minuto y a los 5 minutos de vida, mediante cinco signos que reflejan la adaptación respiratoria, cardiovascular, neuromuscular y de tono.
+      </p>
+    </header>
+
+    <section class="cards">
+      <article class="card">
+        <h2>¿Qué es?</h2>
+        <p>
+          Es una escala de evaluación neonatal que ayuda a identificar rápidamente si el recién nacido necesita apoyo inmediato o vigilancia estrecha.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2>¿Para qué sirve?</h2>
+        <p>
+          Permite valorar la adaptación del bebé al nacimiento y decidir si requiere reanimación o seguimiento clínico más cercano.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2>Escala</h2>
+        <p>
+          La puntuación total oscila entre 0 y 10, donde valores más altos indican mejor adaptación del recién nacido.
+        </p>
+      </article>
+    </section>
+
+    <section class="criteria">
+      <article class="criterion">
+        <h3>1. Frecuencia cardiaca</h3>
+        <p>Se evalúa la frecuencia cardíaca del recién nacido.</p>
+      </article>
+      <article class="criterion">
+        <h3>2. Respiración</h3>
+        <p>Se observa la presencia de respiración efectiva y esfuerzo respiratorio.</p>
+      </article>
+      <article class="criterion">
+        <h3>3. Tono muscular</h3>
+        <p>Se valora el tono y la actividad motora del bebé.</p>
+      </article>
+      <article class="criterion">
+        <h3>4. Irritabilidad refleja</h3>
+        <p>Se considera la respuesta al estímulo y la reactividad.</p>
+      </article>
+      <article class="criterion">
+        <h3>5. Coloración</h3>
+        <p>Se evalúa la coloración de la piel, incluyendo cianosis o palidez.</p>
+      </article>
+    </section>
+
+    <section class="score-box">
+      <h2>Calculadora rápida</h2>
+      <div class="form-grid">
+        <div>
+          <label for="frecuencia">Frecuencia cardiaca</label>
+          <select id="frecuencia">
+            <option value="0">0 - Ausente</option>
+            <option value="1">1 - <100 lpm</option>
+            <option value="2">2 - >100 lpm</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="respiracion">Respiración</label>
+          <select id="respiracion">
+            <option value="0">0 - Ausente</option>
+            <option value="1">1 - Lenta, irregular</option>
+            <option value="2">2 - Normal, regular</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="tono">Tono muscular</label>
+          <select id="tono">
+            <option value="0">0 - Flácido</option>
+            <option value="1">1 - Débil</option>
+            <option value="2">2 - Normal</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="irritabilidad">Irritabilidad refleja</label>
+          <select id="irritabilidad">
+            <option value="0">0 - Ausente</option>
+            <option value="1">1 - Débil</option>
+            <option value="2">2 - Buena respuesta</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="color">Coloración</label>
+          <select id="color">
+            <option value="0">0 - Azul pálido</option>
+            <option value="1">1 - Cianosis central</option>
+            <option value="2">2 - Rosa y bien perfundido</option>
+          </select>
+        </div>
+      </div>
+
+      <button onclick="calcularResultado()">Calcular puntaje</button>
+      <div class="resultado" id="resultado">Puntaje total: 0</div>
+    </section>
+
+    <footer class="footer-note">
+      <h3>Información y referencias</h3>
+      <p><strong>Elaborado por:</strong> Britany Sherlyn Agular Acevedo</p>
+      <p><strong>Referencia APA:</strong> Apgar, V. (1952). A proposal for a new method of evaluation of the newborn infant. <em>Current Researches in Anesthesia &amp; Analgesia, 32</em>, 260-267.</p>
+      <p>La información clínica de esta página se basa en la escala original de Apgar y su uso habitual para evaluar la adaptación neonatal.</p>
+    </footer>
+  </div>
+
+  <script>
+    function calcularResultado() {
+      const valores = [
+        Number(document.getElementById('frecuencia').value),
+        Number(document.getElementById('respiracion').value),
+        Number(document.getElementById('tono').value),
+        Number(document.getElementById('irritabilidad').value),
+        Number(document.getElementById('color').value)
+      ];
+
+      const total = valores.reduce((sum, value) => sum + value, 0);
+      let texto = '';
+
+      if (total >= 0 && total <= 3) {
+        texto = 'Se requiere atención inmediata y soporte respiratorio.';
+      } else if (total >= 4 && total <= 6) {
+        texto = 'Necesita observación y posible soporte complementario.';
+      } else if (total >= 7 && total <= 10) {
+        texto = 'Buen estado neonatal y adaptación satisfactoria.';
+      } else {
+        texto = 'Puntaje fuera del rango esperado.';
+      }
+
+      document.getElementById('resultado').innerHTML = 'Puntaje total: ' + total + ' — ' + texto;
+    }
+  </script>
+</body>
+</html>
